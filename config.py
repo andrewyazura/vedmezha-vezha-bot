@@ -7,10 +7,16 @@ env.read_env()
 class Config:
     BOT_TOKEN = env.str("BOT_TOKEN")
 
+    with env.prefixed("DEFAULTS_"):
+        DEFAULTS = {
+            "parse_mode": env.str("PARSE_MODE"),
+            "run_async": env.bool("RUN_ASYNC"),
+        }
+
     with env.prefixed("LOG_"):
         LOG_CONFIG = {
             "version": 1,
-            "disable_existing_loggers": True,
+            "disable_existing_loggers": False,
             "formatters": {
                 "file": {"format": env.str("FORMAT"), "datefmt": env.str("DATEFMT")}
             },
@@ -25,5 +31,7 @@ class Config:
                     "utc": True,
                 }
             },
-            "root": {"level": env.log_level("LEVEL"), "handlers": ["file"]},
+            "loggers": {
+                "telegram_bot": {"level": env.log_level("LEVEL"), "handlers": ["file"]}
+            },
         }

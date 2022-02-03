@@ -1,7 +1,7 @@
 import logging
-from logging.config import dictConfig
+from functools import wraps
 
-from telegram.ext import Updater
+from telegram.ext import Updater, Defaults
 
 
 class TelegramBot:
@@ -11,15 +11,11 @@ class TelegramBot:
 
     def init_bot(self, config):
         self.config = config
-
-        self.updater = Updater(config.BOT_TOKEN)
-        self.dispatcher = self.updater.dispatcher
-
-        self._init_logging()
-
-    def _init_logging(self):
-        dictConfig(self.config.LOG_CONFIG)
         self.logger = logging.getLogger("telegram_bot")
+
+        defaults = Defaults(**config.DEFAULTS)
+        self.updater = Updater(config.BOT_TOKEN, defaults=defaults)
+        self.dispatcher = self.updater.dispatcher
 
     def register_handler(self, handler_class, *args, **kwargs):
         def decorator(f):
@@ -28,3 +24,13 @@ class TelegramBot:
             return f
 
         return decorator
+
+    def log_update_and_response(self, f):
+        @wraps(f)
+        def decorated_function(update, context, *args, **kwargs):
+            self.logger.debug(f"Update: {str(update)}")
+            response = f(update, context, *args, **kwargs)
+            self.logger.debug(f"Response: {str(response)}")
+            return response
+
+        return decorated_function
