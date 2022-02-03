@@ -10,6 +10,6 @@ def create_app(config=Config):
     dictConfig(config.LOG_CONFIG)
     current_bot.init_bot(config)
 
-    import src.handlers
+    import src.handlers  # noqa: F401
 
     return current_bot

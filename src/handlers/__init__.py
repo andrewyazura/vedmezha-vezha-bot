@@ -1,1 +1,1 @@
-import src.handlers.commands
+import src.handlers.commands  # noqa: F401
