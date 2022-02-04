@@ -25,12 +25,10 @@ class TelegramBot:
 
         return decorator
 
-    def log_update_and_response(self, f):
+    def log_update(self, f):
         @wraps(f)
         def decorated_function(update, context, *args, **kwargs):
             self.logger.debug(f"Update: {str(update)}")
-            response = f(update, context, *args, **kwargs)
-            self.logger.debug(f"Response: {str(response)}")
-            return response
+            return f(update, context, *args, **kwargs)
 
         return decorated_function
