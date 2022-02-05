@@ -1,7 +1,7 @@
 import logging
 from functools import wraps
 
-from telegram.ext import Updater, Defaults
+from telegram.ext import Defaults, PicklePersistence, Updater
 
 
 class TelegramBot:
@@ -14,7 +14,12 @@ class TelegramBot:
         self.logger = logging.getLogger("telegram_bot")
 
         defaults = Defaults(**config.DEFAULTS)
-        self.updater = Updater(config.BOT_TOKEN, defaults=defaults)
+        persistence = PicklePersistence(**config.PERSISTENCE)
+
+        self.updater = Updater(
+            config.BOT["TOKEN"], defaults=defaults, persistence=persistence
+        )
+        self.bot = self.updater.bot
         self.dispatcher = self.updater.dispatcher
 
     def register_handler(self, handler_class, *args, **kwargs):

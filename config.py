@@ -1,16 +1,28 @@
 from environs import Env
 
 env = Env()
-env.read_env()
+env.read_env(override=True)
 
 
 class Config:
-    BOT_TOKEN = env.str("BOT_TOKEN")
+    with env.prefixed("BOT_"):
+        BOT = {
+            "TOKEN": env.str("TOKEN"),
+            "OWNER_ID": env.int("OWNER_ID"),
+            "REPORT_ID": env.int("REPORT_ID"),
+        }
 
     with env.prefixed("DEFAULTS_"):
         DEFAULTS = {
             "parse_mode": env.str("PARSE_MODE"),
             "run_async": env.bool("RUN_ASYNC"),
+        }
+
+    with env.prefixed("PERSISTENCE_"):
+        PERSISTENCE = {
+            "filename": env.str("FILENAME"),
+            "single_file": env.bool("SINGLE_FILE"),
+            "on_flush": env.bool("ON_FLUSH"),
         }
 
     with env.prefixed("LOG_"):
