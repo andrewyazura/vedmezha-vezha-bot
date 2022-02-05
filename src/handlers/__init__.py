@@ -1,1 +1,1 @@
-import src.handlers.commands  # noqa: F401
+from src.handlers import commands, main_menu  # noqa: F401

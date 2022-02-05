@@ -35,3 +35,6 @@ class Config:
                 "telegram_bot": {"level": env.log_level("LEVEL"), "handlers": ["file"]}
             },
         }
+
+    with env.prefixed("FILE_URL_"):
+        FILES = {"ABOUT": env.str("ABOUT"), "LOCATION": env.str("LOCATION")}
