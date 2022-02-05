@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from environs import Env
 
 env = Env()
@@ -46,6 +48,16 @@ class Config:
             "loggers": {
                 "telegram_bot": {"level": env.log_level("LEVEL"), "handlers": ["file"]}
             },
+        }
+
+    with env.prefixed("CLUB_"):
+        CLUB = {
+            "TABLES": env.int("TABLES"),
+            "TABLE_FORMAT": env.str("TABLE_FORMAT"),
+            "SERVICE_PACKAGES": env.dict("SERVICE_PACKAGES", subcast_values=int),
+            "TIMEDELTA": timedelta(
+                **env.dict("TIMEDELTA", subcast_values=int)
+            ),
         }
 
     with env.prefixed("FILE_URL_"):
