@@ -36,7 +36,7 @@ def tables():
 def service_packages():
     return ReplyKeyboardMarkup(
         [
-            [f"{package.name} - {package.price} ₴"]
+            [f"{package['name']} - {package['price']} ₴"]
             for package in current_bot.config.SERVICE_PACKAGES
         ],
         resize_keyboard=True,

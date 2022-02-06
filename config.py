@@ -1,4 +1,3 @@
-from collections import namedtuple
 from datetime import timedelta
 
 from environs import Env

@@ -17,5 +17,5 @@ def button(update, context):
     if command == "remove":
         current_bot.reservations.remove(Query().id == args)
         query.edit_message_text(
-            query.message.text + "\nВидалено", parse_mode=ParseMode.HTML
+            query.message.text + "\n\n<b>Скасовано</b>", parse_mode=ParseMode.HTML
         )

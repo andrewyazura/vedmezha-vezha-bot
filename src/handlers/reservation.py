@@ -3,8 +3,9 @@ from enum import Enum, auto
 
 from telegram import ReplyKeyboardRemove
 from telegram.ext import CommandHandler, ConversationHandler, Filters, MessageHandler
+from tinydb import Query
 
-from src import current_bot, keyboards, owner
+from src import current_bot, helpers, keyboards, owner
 
 
 class ReservationStatus(Enum):
@@ -40,7 +41,7 @@ def get_table(update, context):
 def get_service_package(update, context):
     context.user_data["current"]["service_package"] = update.message.text
 
-    taken = []  # TODO get taken dates
+    taken = helpers.get_taken_dates(context.user_data["current"])
 
     user = update.effective_user
     user.send_message("Оберіть дату", reply_markup=keyboards.date(taken))
@@ -52,7 +53,7 @@ def get_service_package(update, context):
 def get_date(update, context):
     context.user_data["current"]["date"] = update.message.text
 
-    taken = []  # TODO get taken times
+    taken = helpers.get_taken_times(context.user_data["current"])
 
     user = update.effective_user
     user.send_message("Оберіть час", reply_markup=keyboards.time(taken))
