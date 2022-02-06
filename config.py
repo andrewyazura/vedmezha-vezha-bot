@@ -1,9 +1,13 @@
-from datetime import timedelta
+from collections import namedtuple
+from datetime import time, timedelta
 
 from environs import Env
 
 env = Env()
 env.read_env(override=True)
+
+
+ServicePackage = namedtuple("ServicePackage", ["name", "price", "timedelta"])
 
 
 class Config:
@@ -54,11 +58,19 @@ class Config:
         CLUB = {
             "TABLES": env.int("TABLES"),
             "TABLE_FORMAT": env.str("TABLE_FORMAT"),
-            "SERVICE_PACKAGES": env.dict("SERVICE_PACKAGES", subcast_values=int),
-            "TIMEDELTA": timedelta(
-                **env.dict("TIMEDELTA", subcast_values=int)
+            "RESERVATION_TIMEDELTA": timedelta(
+                **env.dict("RESERVATION_TIMEDELTA", subcast_values=int)
             ),
+            "OPENING_TIME": time(**env.dict("OPENING_TIME", subcast_values=int)),
+            "CLOSING_TIME": time(**env.dict("CLOSING_TIME", subcast_values=int)),
         }
+
+    SERVICE_PACKAGES = [
+        ServicePackage(
+            name="Бронювання на 1 годину", price=40, timedelta=timedelta(hours=1)
+        ),
+        ServicePackage(name="Безлім", price=100, timedelta=timedelta(days=1)),
+    ]
 
     with env.prefixed("FILE_URL_"):
         FILES = {"ABOUT": env.str("ABOUT"), "LOCATION": env.str("LOCATION")}

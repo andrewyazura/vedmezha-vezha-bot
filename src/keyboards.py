@@ -9,7 +9,7 @@ from telegram import (
 
 from src import current_bot
 
-_config = current_bot.config.CLUB
+club_config = current_bot.config.CLUB
 
 
 def main_menu():
@@ -24,7 +24,7 @@ def main_menu():
 
 def tables():
     return ReplyKeyboardMarkup(
-        [[_config["TABLE_FORMAT"].format(i + 1)] for i in range(_config["TABLES"])],
+        [[club_config["TABLE_FORMAT"].format(i + 1)] for i in range(club_config["TABLES"])],
         resize_keyboard=True,
         one_time_keyboard=True,
     )
@@ -33,8 +33,8 @@ def tables():
 def service_packages():
     return ReplyKeyboardMarkup(
         [
-            [f"{package} - {price} ₴"]
-            for package, price in _config["SERVICE_PACKAGES"].items()
+            [f"{package.name} - {package.price} ₴"]
+            for package in current_bot.config.SERVICE_PACKAGES
         ],
         resize_keyboard=True,
         one_time_keyboard=True,
@@ -43,7 +43,7 @@ def service_packages():
 
 def date():
     start_date = datetime.date.today()
-    delta = _config["TIMEDELTA"]
+    delta = club_config["RESERVATION_TIMEDELTA"]
 
     return ReplyKeyboardMarkup(
         [
