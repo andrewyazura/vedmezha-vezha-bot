@@ -88,10 +88,16 @@ def get_board_game(update, context):
 @current_bot.log_update
 def get_phone(update, context):
     context.user_data["current"]["phone"] = update.message.contact.phone_number
-    owner.send_reservation(context.user_data["current"])
+
+    reservation = context.user_data["current"]
+    owner.send_reservation(reservation)
+    context.bot_data["reservations"][reservation["date"]][
+        reservation["time"]
+    ] = reservation.copy()
 
     user = update.effective_user
     user.send_message("Готово", reply_markup=keyboards.main_menu())
+    context.user_data["current"] = {}
 
     return ConversationHandler.END
 
@@ -101,6 +107,8 @@ def cancel(update, context):
     user = update.effective_user
     user.send_message(r"Іншим разом\.\.\.", reply_markup=keyboards.main_menu())
     context.user_data["current"] = {}
+
+    return ConversationHandler.END
 
 
 current_bot.dispatcher.add_handler(
