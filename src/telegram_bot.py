@@ -41,3 +41,14 @@ class TelegramBot:
             return f(update, context, *args, **kwargs)
 
         return decorated_function
+
+    def protected(self, f):
+        @wraps(f)
+        def decorated_function(update, context, *args, **kwargs):
+            if update.effective_user.id != self.config.BOT["OWNER_ID"]:
+                return
+
+            self.logger.debug("owner authenticated")
+            return f(update, context, *args, **kwargs)
+
+        return decorated_function

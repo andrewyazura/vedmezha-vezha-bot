@@ -4,6 +4,8 @@ from src import current_bot, helpers
 
 
 @current_bot.register_handler(CallbackQueryHandler)
+@current_bot.log_update
+@current_bot.protected
 def button(update, context):
     query = update.callback_query
     command, args = query.data.split(":", maxsplit=1)
