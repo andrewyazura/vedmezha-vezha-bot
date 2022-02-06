@@ -20,6 +20,12 @@ class Config:
             "run_async": env.bool("RUN_ASYNC"),
         }
 
+    with env.prefixed("DATABASE_"):
+        DATABASE = {"FILE": env.str("FILE")}
+
+    with env.prefixed("FILE_URL_"):
+        FILES = {"ABOUT": env.str("ABOUT"), "LOCATION": env.str("LOCATION")}
+
     with env.prefixed("LOG_"):
         LOG_CONFIG = {
             "version": 1,
@@ -43,12 +49,16 @@ class Config:
             },
         }
 
-    with env.prefixed("CLUB_"):
-        CLUB = {
-            "TABLES": env.int("TABLES"),
-            "TABLE_FORMAT": env.str("TABLE_FORMAT"),
-            "RESERVATION_TIMEDELTA": timedelta(
-                **env.dict("RESERVATION_TIMEDELTA", subcast_values=int)
+    with env.prefixed("TABLES_"):
+        TABLES = {
+            "AMOUNT": env.int("AMOUNT"),
+            "FORMAT": env.str("FORMAT")
+        }
+
+    with env.prefixed("RESERVATION_"):
+        RESERVATION = {
+            "TIMEDELTA": timedelta(
+                **env.dict("TIMEDELTA", subcast_values=int)
             ),
             "OPENING_TIME": timedelta(**env.dict("OPENING_TIME", subcast_values=int)),
             "CLOSING_TIME": timedelta(**env.dict("CLOSING_TIME", subcast_values=int)),
@@ -63,9 +73,3 @@ class Config:
         },
         {"name": "Безлім", "price": 100, "timedelta": timedelta(days=1)},
     ]
-
-    with env.prefixed("FILE_URL_"):
-        FILES = {"ABOUT": env.str("ABOUT"), "LOCATION": env.str("LOCATION")}
-
-    with env.prefixed("DATABASE_"):
-        DATABASE = {"FILE": env.str("FILE")}

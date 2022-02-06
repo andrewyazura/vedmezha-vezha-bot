@@ -9,8 +9,6 @@ from telegram import (
 
 from src import current_bot, helpers
 
-club_config = current_bot.config.CLUB
-
 
 def main_menu():
     return ReplyKeyboardMarkup(
@@ -23,11 +21,10 @@ def main_menu():
 
 
 def tables():
+    config = current_bot.config.TABLES
+
     return ReplyKeyboardMarkup(
-        [
-            [club_config["TABLE_FORMAT"].format(i + 1)]
-            for i in range(club_config["TABLES"])
-        ],
+        [[config["FORMAT"].format(i + 1)] for i in range(config["AMOUNT"])],
         resize_keyboard=True,
         one_time_keyboard=True,
     )
@@ -46,7 +43,7 @@ def service_packages():
 
 def date(taken_dates=()):
     start_date = datetime.date.today()
-    delta = club_config["RESERVATION_TIMEDELTA"]
+    delta = current_bot.config.RESERVATION["TIMEDELTA"]
 
     keyboard = []
     for i in range(delta.days + 1):
@@ -65,9 +62,10 @@ def date(taken_dates=()):
 
 
 def time(taken_times=()):
-    start = club_config["OPENING_TIME"]
-    end = club_config["CLOSING_TIME"]
-    period = club_config["TIME_PERIOD"]
+    config = current_bot.config.RESERVATION
+    start = config["OPENING_TIME"]
+    end = config["CLOSING_TIME"]
+    period = config["TIME_PERIOD"]
 
     keyboard = []
     for i in range((end - start) // period):

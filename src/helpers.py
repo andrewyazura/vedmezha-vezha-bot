@@ -29,7 +29,7 @@ def get_taken_dates(reservation):
 
 
 def get_taken_times(reservation):
-    period = current_bot.config.CLUB["TIME_PERIOD"]
+    period = current_bot.config.RESERVATION["TIME_PERIOD"]
     reservations = current_bot.reservations.search(
         (q.table == reservation["table"]) & (q.date == reservation["date"])
     )
