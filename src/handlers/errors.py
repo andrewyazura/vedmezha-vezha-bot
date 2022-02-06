@@ -22,7 +22,11 @@ def error_handler(update, context):
         f"<pre>{''.join(error_traceback)}</pre>"
     )
 
-    context.bot.send_message(chat_id=526698748, text=message, parse_mode=ParseMode.HTML)
+    context.bot.send_message(
+        chat_id=current_bot.config.BOT["REPORT_ID"],
+        text=message,
+        parse_mode=ParseMode.HTML,
+    )
     update.effective_user.send_message(
         r"Щось пішло не так\.\.\." "\n" "Розробники вже сповіщені"
     )
