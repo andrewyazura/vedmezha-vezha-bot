@@ -1,6 +1,6 @@
 from telegram.ext import CallbackQueryHandler
 
-from src import current_bot
+from src import current_bot, helpers
 
 
 @current_bot.register_handler(CallbackQueryHandler)
@@ -9,6 +9,6 @@ def button(update, context):
     command, args = query.data.split(":", maxsplit=1)
 
     if command == "remove":
-        print(args)
+        helpers.delete_reservation(context.bot_data, args)
 
     query.answer()

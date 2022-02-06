@@ -24,7 +24,10 @@ def main_menu():
 
 def tables():
     return ReplyKeyboardMarkup(
-        [[club_config["TABLE_FORMAT"].format(i + 1)] for i in range(club_config["TABLES"])],
+        [
+            [club_config["TABLE_FORMAT"].format(i + 1)]
+            for i in range(club_config["TABLES"])
+        ],
         resize_keyboard=True,
         one_time_keyboard=True,
     )

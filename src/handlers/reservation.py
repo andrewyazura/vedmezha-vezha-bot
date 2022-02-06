@@ -4,7 +4,7 @@ from enum import Enum, auto
 from telegram import ReplyKeyboardRemove
 from telegram.ext import CommandHandler, ConversationHandler, Filters, MessageHandler
 
-from src import current_bot, keyboards, owner
+from src import current_bot, helpers, keyboards, owner
 
 
 class ReservationStatus(Enum):
@@ -91,9 +91,7 @@ def get_phone(update, context):
 
     reservation = context.user_data["current"]
     owner.send_reservation(reservation)
-    context.bot_data["reservations"][reservation["date"]][
-        reservation["time"]
-    ] = reservation.copy()
+    helpers.save_reservation(context.bot_data, reservation)
 
     user = update.effective_user
     user.send_message("Готово", reply_markup=keyboards.main_menu())
