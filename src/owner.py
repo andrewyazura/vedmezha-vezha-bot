@@ -3,9 +3,8 @@ from telegram import ParseMode
 from src import current_bot, keyboards
 
 
-def send_reservation(reservation):
+def send_reservation(reservation, new=True):
     message = (
-        "<b>Нове замовлення</b>:\n"
         f"{reservation['table']}\n"
         f"{reservation['service_package']}\n"
         f"Дата: <i>{reservation['date']}</i>\n"
@@ -13,6 +12,9 @@ def send_reservation(reservation):
         f"Телефон: <i>{reservation['phone']}</i>\n"
         f"Ігри: <i>{reservation.get('board_games') or 'не вказано'}</i>\n"
     )
+
+    if new:
+        message = "<b>Нове замовлення</b>:\n" + message
 
     current_bot.bot.send_message(
         chat_id=current_bot.config.BOT["OWNER_ID"],

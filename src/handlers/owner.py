@@ -1,8 +1,19 @@
 from telegram import ParseMode
-from telegram.ext import CallbackQueryHandler
+from telegram.ext import CallbackQueryHandler, CommandHandler
 from tinydb import Query
 
-from src import current_bot
+from src import current_bot, owner
+
+
+@current_bot.register_handler(CommandHandler, "reservations")
+@current_bot.log_update
+@current_bot.protected
+def get_reservations_list(update, context):
+    update.effective_user
+    reservations = current_bot.reservations.all()
+
+    for r in reservations:
+        owner.send_reservation(r, new=False)
 
 
 @current_bot.register_handler(CallbackQueryHandler)

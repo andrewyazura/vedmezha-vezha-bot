@@ -92,6 +92,6 @@ def get_contact():
 
 def owner_commands(reservation_id):
     button = InlineKeyboardButton(
-        text="Скасувати замовлення", callback_data=f"remove:{reservation_id}"
+        text="Скасувати бронювання", callback_data=f"remove:{reservation_id}"
     )
     return InlineKeyboardMarkup([[button]])
