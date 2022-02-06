@@ -1,19 +1,22 @@
+from telegram import ParseMode
+
 from src import current_bot, keyboards
 
 
 def send_reservation(reservation):
     message = (
-        "*Нове замовлення*:\n"
+        "<b>Нове замовлення</b>:\n"
         f"{reservation['table']}\n"
         f"{reservation['service_package']}\n"
-        f"Дата: _{reservation['date']}_\n"
-        f"Час: _{reservation['time']}_\n"
-        f"Телефон: _{reservation['phone']}_\n"
-        f"Ігри: _{reservation.get('board_games') or 'не вказано'}_\n"
+        f"Дата: <i>{reservation['date']}</i>\n"
+        f"Час: <i>{reservation['time']}</i>\n"
+        f"Телефон: <i>{reservation['phone']}</i>\n"
+        f"Ігри: <i>{reservation.get('board_games') or 'не вказано'}</i>\n"
     )
 
     current_bot.bot.send_message(
         chat_id=current_bot.config.BOT["OWNER_ID"],
-        text=message.replace("-", r"\-"),
+        text=message,
         reply_markup=keyboards.owner_commands(reservation["id"]),
+        parse_mode=ParseMode.HTML,
     )
