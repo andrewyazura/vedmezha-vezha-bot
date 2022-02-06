@@ -58,6 +58,9 @@ def date(taken_dates=()):
 
         keyboard.append([date])
 
+    if not keyboard:
+        keyboard = [["Немає вільних місць"]]
+
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=True)
 
 
@@ -74,6 +77,9 @@ def time(taken_times=()):
             continue
 
         keyboard.append([time])
+
+    if not keyboard:
+        keyboard = [["Немає вільних місць"]]
 
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=True)
 

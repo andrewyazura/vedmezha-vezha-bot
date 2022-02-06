@@ -137,6 +137,9 @@ current_bot.dispatcher.add_handler(
             ],
             ReservationStatus.PHONE: [MessageHandler(Filters.contact, get_phone)],
         },
-        fallbacks=[CommandHandler("cancel", cancel)],
+        fallbacks=[
+            CommandHandler("cancel", cancel),
+            MessageHandler(Filters.regex("^Немає вільних місць$"), cancel),
+        ],
     )
 )
