@@ -15,9 +15,9 @@ def error_handler(update, context):
     )
 
     message = (
+        f"<i>bot_data</i><pre>{context.bot_data}</pre>\n\n"
         f"<i>user_data</i><pre>{context.user_data}</pre>\n"
         f"<i>chat_data</i><pre>{context.chat_data}</pre>\n"
-        f"<i>bot_data</i><pre>{context.bot_data}</pre>\n\n"
         "<i>exception</i>\n"
         f"<pre>{''.join(error_traceback)}</pre>"
     )

@@ -34,6 +34,10 @@ class TelegramBot:
         @wraps(f)
         def decorated_function(update, context, *args, **kwargs):
             self.logger.debug(f"Update: {str(update)}")
+            self.logger.debug(f"bot_data: {str(context.bot_data)}")
+            self.logger.debug(f"user_data: {str(context.user_data)}")
+            self.logger.debug(f"chat_data: {str(context.chat_data)}")
+
             return f(update, context, *args, **kwargs)
 
         return decorated_function
