@@ -50,8 +50,10 @@ def get_service_package(update, context):
 def get_date(update, context):
     context.user_data["current"]["date"] = update.message.text
 
+    taken = helpers.get_taken_times(context.bot_data, update.message.text)
+
     user = update.effective_user
-    user.send_message("Оберіть час", reply_markup=keyboards.time())
+    user.send_message("Оберіть час", reply_markup=keyboards.time(taken))
 
     return ReservationStatus.TIME
 

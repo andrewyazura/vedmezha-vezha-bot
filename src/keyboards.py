@@ -64,19 +64,21 @@ def _format_timedelta(timedelta):
     return f"{hours:02}:{minutes:02}"
 
 
-def time():
+def time(taken_times=()):
     start = club_config["OPENING_TIME"]
     end = club_config["CLOSING_TIME"]
     period = club_config["TIME_PERIOD"]
 
-    return ReplyKeyboardMarkup(
-        [
-            [_format_timedelta(start + period * i)]
-            for i in range((end - start) // period)
-        ],
-        resize_keyboard=True,
-        one_time_keyboard=True,
-    )
+    keyboard = []
+    for i in range((end - start) // period):
+        time = _format_timedelta(start + period * i)
+
+        if time in taken_times:
+            continue
+
+        keyboard.append([time])
+
+    return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=True)
 
 
 def get_contact():
