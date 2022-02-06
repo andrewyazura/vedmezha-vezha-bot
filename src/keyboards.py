@@ -44,18 +44,21 @@ def service_packages():
     )
 
 
-def date():
+def date(taken_dates=()):
     start_date = datetime.date.today()
     delta = club_config["RESERVATION_TIMEDELTA"]
 
-    return ReplyKeyboardMarkup(
-        [
-            [(start_date + datetime.timedelta(days=i)).strftime("%d-%m")]
-            for i in range(delta.days + 1)
-        ],
-        resize_keyboard=True,
-        one_time_keyboard=True,
-    )
+    keyboard = []
+    for i in range(delta.days + 1):
+        date = start_date + datetime.timedelta(days=i)
+        date = date.strftime("%d-%m")
+
+        if date in taken_dates:
+            continue
+
+        keyboard.append([date])
+
+    return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=True)
 
 
 def _format_timedelta(timedelta):

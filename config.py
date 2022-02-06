@@ -7,9 +7,6 @@ env = Env()
 env.read_env(override=True)
 
 
-ServicePackage = namedtuple("ServicePackage", ["name", "price", "timedelta"])
-
-
 class Config:
     with env.prefixed("BOT_"):
         BOT = {
@@ -22,13 +19,6 @@ class Config:
         DEFAULTS = {
             "parse_mode": env.str("PARSE_MODE"),
             "run_async": env.bool("RUN_ASYNC"),
-        }
-
-    with env.prefixed("PERSISTENCE_"):
-        PERSISTENCE = {
-            "filename": env.str("FILENAME"),
-            "single_file": env.bool("SINGLE_FILE"),
-            "on_flush": env.bool("ON_FLUSH"),
         }
 
     with env.prefixed("LOG_"):
@@ -63,15 +53,20 @@ class Config:
             ),
             "OPENING_TIME": timedelta(**env.dict("OPENING_TIME", subcast_values=int)),
             "CLOSING_TIME": timedelta(**env.dict("CLOSING_TIME", subcast_values=int)),
-            "TIME_PERIOD": timedelta(**env.dict("TIME_PERIOD", subcast_values=int))
+            "TIME_PERIOD": timedelta(**env.dict("TIME_PERIOD", subcast_values=int)),
         }
 
     SERVICE_PACKAGES = [
-        ServicePackage(
-            name="Бронювання на 1 годину", price=40, timedelta=timedelta(hours=1)
-        ),
-        ServicePackage(name="Безлім", price=100, timedelta=timedelta(days=1)),
+        {
+            "name": "Бронювання на 1 годину",
+            "price": 40,
+            "timedelta": timedelta(hours=1),
+        },
+        {"name": "Безлім", "price": 100, "timedelta": timedelta(days=1)},
     ]
 
     with env.prefixed("FILE_URL_"):
         FILES = {"ABOUT": env.str("ABOUT"), "LOCATION": env.str("LOCATION")}
+
+    with env.prefixed("DATABASE_"):
+        DATABASE = {"FILE": env.str("FILE")}

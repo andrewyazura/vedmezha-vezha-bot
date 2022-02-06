@@ -1,7 +1,7 @@
 import logging
 from functools import wraps
 
-from telegram.ext import Defaults, PicklePersistence, Updater
+from telegram.ext import Defaults, Updater
 
 
 class TelegramBot:
@@ -14,13 +14,15 @@ class TelegramBot:
         self.logger = logging.getLogger("telegram_bot")
 
         defaults = Defaults(**config.DEFAULTS)
-        persistence = PicklePersistence(**config.PERSISTENCE)
 
-        self.updater = Updater(
-            config.BOT["TOKEN"], defaults=defaults, persistence=persistence
-        )
+        self.updater = Updater(config.BOT["TOKEN"], defaults=defaults)
         self.bot = self.updater.bot
         self.dispatcher = self.updater.dispatcher
+
+    def init_db(self, db):
+        self.db = db
+        self.reservations = db.table("reservations")
+        self.packages = db.table("service_packages")
 
     def register_handler(self, handler_class, *args, **kwargs):
         def decorator(f):

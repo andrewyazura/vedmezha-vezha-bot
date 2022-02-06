@@ -4,7 +4,7 @@ from enum import Enum, auto
 from telegram import ReplyKeyboardRemove
 from telegram.ext import CommandHandler, ConversationHandler, Filters, MessageHandler
 
-from src import current_bot, helpers, keyboards, owner
+from src import current_bot, keyboards, owner
 
 
 class ReservationStatus(Enum):
@@ -38,11 +38,12 @@ def get_table(update, context):
 
 @current_bot.log_update
 def get_service_package(update, context):
-    package = helpers.find_service_package(update.message.text)
-    context.user_data["current"]["service_package"] = package
+    context.user_data["current"]["service_package"] = update.message.text
+
+    taken = []  # TODO get taken dates
 
     user = update.effective_user
-    user.send_message("Оберіть дату", reply_markup=keyboards.date())
+    user.send_message("Оберіть дату", reply_markup=keyboards.date(taken))
 
     return ReservationStatus.DATE
 
@@ -51,7 +52,7 @@ def get_service_package(update, context):
 def get_date(update, context):
     context.user_data["current"]["date"] = update.message.text
 
-    taken = helpers.get_taken_times(context.bot_data, update.message.text)
+    taken = []  # TODO get taken times
 
     user = update.effective_user
     user.send_message("Оберіть час", reply_markup=keyboards.time(taken))
@@ -93,8 +94,8 @@ def get_phone(update, context):
     context.user_data["current"]["phone"] = update.message.contact.phone_number
 
     reservation = context.user_data["current"]
+    current_bot.reservations.insert(reservation)
     owner.send_reservation(reservation)
-    helpers.save_reservation(context.bot_data, reservation)
 
     user = update.effective_user
     user.send_message("Готово", reply_markup=keyboards.main_menu())
@@ -137,7 +138,5 @@ current_bot.dispatcher.add_handler(
             ReservationStatus.PHONE: [MessageHandler(Filters.contact, get_phone)],
         },
         fallbacks=[CommandHandler("cancel", cancel)],
-        name="reservation",
-        persistent=True,
     )
 )

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "63756beb1fff1e8a114da6ea90346999d867706a56681570d18646f0fcb95e2f"
+            "sha256": "437cca0676d606f64d510e1e558231349ee7de6ff6c2af88bd5fd80ae4cec1da"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -83,11 +83,11 @@
         },
         "python-telegram-bot": {
             "hashes": [
-                "sha256:833f39110f5d019b39a6c6fcbabd6ea1627eaaa0a26e618c0be099568672d791",
-                "sha256:d2c555431821f4ace0c1b7ce12af41999f01b793b275dee131f1034d08c01e3e"
+                "sha256:534f5bb0ff4ca34c9252e97e0b3bcdab81d97be0eb4821682a361cb426c00e55",
+                "sha256:baeff704baa2ac3dc17a944c02da888228ad258e89be2e5bcbd13a8a5102d573"
             ],
             "index": "pypi",
-            "version": "==13.10"
+            "version": "==13.11"
         },
         "pytz": {
             "hashes": [
@@ -109,6 +109,14 @@
                 "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"
             ],
             "version": "==1.16.0"
+        },
+        "tinydb": {
+            "hashes": [
+                "sha256:0d5400f5e5ae368a84d57cb234456f1cf70430fd39bcd77ccd568fea91ff2a4e",
+                "sha256:ac1fdae2a7d5d7e2ca915d2666e685d63982991827c5dd097b6be4a3b5822dbc"
+            ],
+            "index": "pypi",
+            "version": "==4.6.1"
         },
         "tornado": {
             "hashes": [
