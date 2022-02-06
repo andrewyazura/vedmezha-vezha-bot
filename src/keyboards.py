@@ -7,7 +7,7 @@ from telegram import (
     ReplyKeyboardMarkup,
 )
 
-from src import current_bot
+from src import current_bot, helpers
 
 club_config = current_bot.config.CLUB
 
@@ -61,12 +61,6 @@ def date(taken_dates=()):
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=True)
 
 
-def _format_timedelta(timedelta):
-    hours, remainder = divmod(timedelta.seconds, 3600)
-    minutes, _ = divmod(remainder, 60)
-    return f"{hours:02}:{minutes:02}"
-
-
 def time(taken_times=()):
     start = club_config["OPENING_TIME"]
     end = club_config["CLOSING_TIME"]
@@ -74,7 +68,7 @@ def time(taken_times=()):
 
     keyboard = []
     for i in range((end - start) // period):
-        time = _format_timedelta(start + period * i)
+        time = helpers.format_timedelta(start + period * i)
 
         if time in taken_times:
             continue

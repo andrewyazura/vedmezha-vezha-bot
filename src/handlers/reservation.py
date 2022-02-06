@@ -3,7 +3,6 @@ from enum import Enum, auto
 
 from telegram import ReplyKeyboardRemove
 from telegram.ext import CommandHandler, ConversationHandler, Filters, MessageHandler
-from tinydb import Query
 
 from src import current_bot, helpers, keyboards, owner
 
