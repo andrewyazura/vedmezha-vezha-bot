@@ -23,6 +23,9 @@ def error_handler(update, context):
     )
 
     context.bot.send_message(chat_id=526698748, text=message, parse_mode=ParseMode.HTML)
+    update.effective_user.send_message(
+        r"Щось пішло не так\.\.\." "\n" "Розробники вже сповіщені"
+    )
 
 
 current_bot.dispatcher.add_error_handler(error_handler)
