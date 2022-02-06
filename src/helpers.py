@@ -1,5 +1,15 @@
 from collections import defaultdict
 
+from src import current_bot
+
+
+def find_service_package(package_name):
+    for i in current_bot.config.SERVICE_PACKAGES:
+        if i.name == package_name:
+            return i
+
+    return None
+
 
 def find_reservation(bot_data, _id):
     reservations = bot_data["reservations"]

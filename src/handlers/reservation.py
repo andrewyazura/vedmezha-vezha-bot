@@ -38,7 +38,8 @@ def get_table(update, context):
 
 @current_bot.log_update
 def get_service_package(update, context):
-    context.user_data["current"]["service_package"] = update.message.text
+    package = helpers.find_service_package(update.message.text)
+    context.user_data["current"]["service_package"] = package
 
     user = update.effective_user
     user.send_message("Оберіть дату", reply_markup=keyboards.date())

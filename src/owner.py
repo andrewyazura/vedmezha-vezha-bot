@@ -7,7 +7,7 @@ def send_reservation(reservation):
     message = (
         "<b>Нове замовлення</b>:\n"
         f"{reservation['table']}\n"
-        f"{reservation['service_package']}\n"
+        f"{reservation['service_package'].name}\n"
         f"Дата: <i>{reservation['date']}</i>\n"
         f"Час: <i>{reservation['time']}</i>\n"
         f"Телефон: <i>{reservation['phone']}</i>\n"
