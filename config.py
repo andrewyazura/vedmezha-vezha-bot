@@ -1,5 +1,5 @@
 from collections import namedtuple
-from datetime import time, timedelta
+from datetime import timedelta
 
 from environs import Env
 
@@ -61,8 +61,9 @@ class Config:
             "RESERVATION_TIMEDELTA": timedelta(
                 **env.dict("RESERVATION_TIMEDELTA", subcast_values=int)
             ),
-            "OPENING_TIME": time(**env.dict("OPENING_TIME", subcast_values=int)),
-            "CLOSING_TIME": time(**env.dict("CLOSING_TIME", subcast_values=int)),
+            "OPENING_TIME": timedelta(**env.dict("OPENING_TIME", subcast_values=int)),
+            "CLOSING_TIME": timedelta(**env.dict("CLOSING_TIME", subcast_values=int)),
+            "TIME_PERIOD": timedelta(**env.dict("TIME_PERIOD", subcast_values=int))
         }
 
     SERVICE_PACKAGES = [

@@ -58,9 +58,24 @@ def date():
     )
 
 
+def _format_timedelta(timedelta):
+    hours, remainder = divmod(timedelta.seconds, 3600)
+    minutes, _ = divmod(remainder, 60)
+    return f"{hours:02}:{minutes:02}"
+
+
 def time():
+    start = club_config["OPENING_TIME"]
+    end = club_config["CLOSING_TIME"]
+    period = club_config["TIME_PERIOD"]
+
     return ReplyKeyboardMarkup(
-        [["10:10"]], resize_keyboard=True, one_time_keyboard=True
+        [
+            [_format_timedelta(start + period * i)]
+            for i in range((end - start) // period)
+        ],
+        resize_keyboard=True,
+        one_time_keyboard=True,
     )
 
 
