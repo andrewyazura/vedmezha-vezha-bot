@@ -50,16 +50,11 @@ class Config:
         }
 
     with env.prefixed("TABLES_"):
-        TABLES = {
-            "AMOUNT": env.int("AMOUNT"),
-            "FORMAT": env.str("FORMAT")
-        }
+        TABLES = {"AMOUNT": env.int("AMOUNT"), "FORMAT": env.str("FORMAT")}
 
     with env.prefixed("RESERVATION_"):
         RESERVATION = {
-            "TIMEDELTA": timedelta(
-                **env.dict("TIMEDELTA", subcast_values=int)
-            ),
+            "TIMEDELTA": timedelta(**env.dict("TIMEDELTA", subcast_values=int)),
             "OPENING_TIME": timedelta(**env.dict("OPENING_TIME", subcast_values=int)),
             "CLOSING_TIME": timedelta(**env.dict("CLOSING_TIME", subcast_values=int)),
             "TIME_PERIOD": timedelta(**env.dict("TIME_PERIOD", subcast_values=int)),
