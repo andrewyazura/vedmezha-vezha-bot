@@ -18,6 +18,7 @@ class TelegramBot:
         self.updater = Updater(config.BOT["TOKEN"], defaults=defaults)
         self.bot = self.updater.bot
         self.dispatcher = self.updater.dispatcher
+        self.job_queue = self.updater.job_queue
 
     def init_db(self, db):
         self.db = db

@@ -58,6 +58,7 @@ class Config:
             "OPENING_TIME": timedelta(**env.dict("OPENING_TIME", subcast_values=int)),
             "CLOSING_TIME": timedelta(**env.dict("CLOSING_TIME", subcast_values=int)),
             "TIME_PERIOD": timedelta(**env.dict("TIME_PERIOD", subcast_values=int)),
+            "CLEAR_INTERVAL": timedelta(**env.dict("CLEAR_INTERVAL", subcast_values=int)),
         }
 
     SERVICE_PACKAGES = [

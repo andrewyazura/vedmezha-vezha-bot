@@ -22,6 +22,7 @@ def make_reservation(update, context):
 
     user = update.effective_user
     user.send_message("Оберіть столик", reply_markup=keyboards.tables())
+    user.send_message(r"Скасувати \- /cancel")
 
     return ReservationStatus.TABLE
 

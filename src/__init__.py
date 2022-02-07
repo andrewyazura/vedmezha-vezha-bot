@@ -16,5 +16,6 @@ def create_app(config=Config):
     current_bot.init_db(db)
 
     import src.handlers  # noqa: F401
+    import src.jobs  # noqa: F401
 
     return current_bot
