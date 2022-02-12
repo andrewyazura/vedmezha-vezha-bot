@@ -97,10 +97,7 @@ def get_amount(update, context):
 @current_bot.log_update
 def skip_board_game(update, context):
     user = update.effective_user
-    user.send_message(
-        "Для завершення бронювання, нам потрібен ваш номер телефону",
-        reply_markup=keyboards.get_contact(),
-    )
+    user.send_message("Для завершення бронювання, нам потрібен ваш номер телефону")
 
     return ReservationStatus.PHONE
 
@@ -114,7 +111,7 @@ def get_board_game(update, context):
 
 @current_bot.log_update
 def get_phone(update, context):
-    context.user_data["current"]["phone"] = update.message.contact.phone_number
+    context.user_data["current"]["phone"] = update.message.text
 
     reservation = context.user_data["current"]
     current_bot.reservations.insert(reservation)
@@ -171,7 +168,11 @@ current_bot.dispatcher.add_handler(
                 MessageHandler(Filters.text & (~Filters.command), get_board_game),
                 CommandHandler("skip", skip_board_game),
             ],
-            ReservationStatus.PHONE: [MessageHandler(Filters.contact, get_phone)],
+            ReservationStatus.PHONE: [
+                MessageHandler(
+                    Filters.regex(current_bot.config.PHONE_NUMBER_REGEX), get_phone
+                )
+            ],
         },
         fallbacks=[
             CommandHandler("cancel", cancel),

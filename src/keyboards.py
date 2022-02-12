@@ -1,11 +1,6 @@
 import datetime
 
-from telegram import (
-    InlineKeyboardButton,
-    InlineKeyboardMarkup,
-    KeyboardButton,
-    ReplyKeyboardMarkup,
-)
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup
 
 from src import current_bot, helpers
 
@@ -80,12 +75,6 @@ def time(taken_times=()):
         keyboard = [["Немає вільних місць"]]
 
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=True)
-
-
-def get_contact():
-    button = KeyboardButton(text="Надіслати номер телефону", request_contact=True)
-
-    return ReplyKeyboardMarkup([[button]], resize_keyboard=True, one_time_keyboard=True)
 
 
 def owner_commands(reservation_id):
