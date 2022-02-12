@@ -178,5 +178,6 @@ current_bot.dispatcher.add_handler(
             CommandHandler("cancel", cancel),
             MessageHandler(Filters.regex("^Немає вільних місць$"), cancel),
         ],
+        allow_reentry=True,
     )
 )
