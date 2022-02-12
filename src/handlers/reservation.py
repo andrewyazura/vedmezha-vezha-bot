@@ -8,10 +8,12 @@ from src import current_bot, helpers, keyboards, owner
 
 
 class ReservationStatus(Enum):
+    NAME = auto()
     TABLE = auto()
     SERVICE_PACKAGE = auto()
     DATE = auto()
     TIME = auto()
+    AMOUNT = auto()
     BOARD_GAME = auto()
     PHONE = auto()
 
@@ -21,8 +23,18 @@ def make_reservation(update, context):
     context.user_data["current"] = {"id": uuid.uuid4().hex}
 
     user = update.effective_user
+    user.send_message("Введіть ім'я", reply_markup=ReplyKeyboardRemove())
+    user.send_message("Скасувати - /cancel")
+
+    return ReservationStatus.NAME
+
+
+@current_bot.log_update
+def get_name(update, context):
+    context.user_data["current"]["name"] = update.message.text
+
+    user = update.effective_user
     user.send_message("Оберіть столик", reply_markup=keyboards.tables())
-    user.send_message(r"Скасувати \- /cancel")
 
     return ReservationStatus.TABLE
 
@@ -66,8 +78,18 @@ def get_time(update, context):
     context.user_data["current"]["time"] = update.message.text
 
     user = update.effective_user
-    user.send_message(r"Чи є у Вас побажання стосовно настільніх ігор\?")
-    user.send_message(r"Пропустити \- /skip", reply_markup=ReplyKeyboardRemove())
+    user.send_message("Введіть кількість людей")
+
+    return ReservationStatus.AMOUNT
+
+
+@current_bot.log_update
+def get_amount(update, context):
+    context.user_data["current"]["amount"] = update.message.text
+
+    user = update.effective_user
+    user.send_message("Чи є у Вас побажання стосовно настільніх ігор?")
+    user.send_message("Пропустити - /skip", reply_markup=ReplyKeyboardRemove())
 
     return ReservationStatus.BOARD_GAME
 
@@ -100,6 +122,11 @@ def get_phone(update, context):
 
     user = update.effective_user
     user.send_message("Готово", reply_markup=keyboards.main_menu())
+    user.send_message(
+        f"{reservation['table']}\n"
+        f"<b>Дата:</b> {reservation['date']}\n"
+        f"<b>Час:</b> {reservation['time']}\n"
+    )
     context.user_data["current"] = {}
 
     return ConversationHandler.END
@@ -108,7 +135,7 @@ def get_phone(update, context):
 @current_bot.log_update
 def cancel(update, context):
     user = update.effective_user
-    user.send_message(r"Іншим разом\.\.\.", reply_markup=keyboards.main_menu())
+    user.send_message("Іншим разом...", reply_markup=keyboards.main_menu())
     context.user_data["current"] = {}
 
     return ConversationHandler.END
@@ -120,17 +147,25 @@ current_bot.dispatcher.add_handler(
             MessageHandler(Filters.regex(r"^Забронювати столик 🗓️$"), make_reservation)
         ],
         states={
+            ReservationStatus.NAME: [
+                MessageHandler(Filters.regex(r"^[\w ]+$"), get_name)
+            ],
             ReservationStatus.TABLE: [
                 MessageHandler(Filters.regex(r"^Стіл \d+$"), get_table)
             ],
             ReservationStatus.SERVICE_PACKAGE: [
-                MessageHandler(Filters.regex(r"^[\w\d ]+ - \d+ ₴"), get_service_package)
+                MessageHandler(
+                    Filters.regex(r"^[\w\d ]+ - \d+ ₴$"), get_service_package
+                )
             ],
             ReservationStatus.DATE: [
-                MessageHandler(Filters.regex(r"\d{2}-\d{2}"), get_date)
+                MessageHandler(Filters.regex(r"^\d{2}-\d{2}$"), get_date)
             ],
             ReservationStatus.TIME: [
-                MessageHandler(Filters.regex(r"\d{2}:\d{2}"), get_time)
+                MessageHandler(Filters.regex(r"^\d{2}:\d{2}$"), get_time)
+            ],
+            ReservationStatus.AMOUNT: [
+                MessageHandler(Filters.regex(r"^\d+$"), get_amount)
             ],
             ReservationStatus.BOARD_GAME: [
                 MessageHandler(Filters.text & (~Filters.command), get_board_game),
