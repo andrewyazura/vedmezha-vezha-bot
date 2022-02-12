@@ -38,10 +38,14 @@ def get_taken_times(reservation):
 
     for r in reservations:
         h, m = r["time"].split(":")
-        start = timedelta(hours=int(h), minutes=int(m))
-        duration = get_service_package(r["service_package"])["timedelta"]
+        time = timedelta(hours=int(h), minutes=int(m))
 
-        for i in range(duration // period):
+        duration = get_service_package(r["service_package"])["timedelta"]
+        periods = duration // period
+
+        start = time - period * (periods - 1)
+
+        for i in range(periods + 1):
             time = format_timedelta(start + period * i)
             taken.append(time)
 

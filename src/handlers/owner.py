@@ -9,8 +9,10 @@ from src import current_bot, owner
 @current_bot.log_update
 @current_bot.protected
 def get_reservations_list(update, context):
-    update.effective_user
     reservations = current_bot.reservations.all()
+
+    if not reservations:
+        update.effective_user.send_message("Немає бронювань")
 
     for r in reservations:
         owner.send_reservation(r, new=False)
@@ -30,3 +32,11 @@ def button(update, context):
         query.edit_message_text(
             query.message.text + "\n\n<b>Скасовано</b>", parse_mode=ParseMode.HTML
         )
+
+
+@current_bot.register_handler(CommandHandler, "help")
+@current_bot.log_update
+@current_bot.protected
+def help(update, context):
+    user = update.effective_user
+    user.send_message("/reservations - список бронювань")
