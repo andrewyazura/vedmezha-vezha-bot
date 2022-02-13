@@ -64,12 +64,7 @@ class Config:
         }
 
     SERVICE_PACKAGES = [
-        {
-            "name": "Бронювання на 1 годину",
-            "price": 40,
-            "timedelta": timedelta(hours=1),
-        },
-        {"name": "Безлім", "price": 100, "timedelta": timedelta(days=1)},
+        {"name": "Безлім", "price": 100, "timedelta": timedelta(days=1)}
     ]
 
     PHONE_NUMBER_REGEX = env.str("PHONE_NUMBER_REGEX")
