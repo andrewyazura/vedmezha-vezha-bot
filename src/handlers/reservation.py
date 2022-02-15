@@ -123,7 +123,7 @@ def get_phone(update, context):
         f"{reservation['table']}\n"
         f"<b>Дата:</b> {reservation['date']}\n"
         f"<b>Час:</b> {reservation['time']}\n"
-        f"<b>Ігри:</b> {reservation['board_games']}\n"
+        f"<b>Ігри:</b> {reservation.get('board_games') or 'не вказано'}\n"
     )
     context.user_data["current"] = {}
 
